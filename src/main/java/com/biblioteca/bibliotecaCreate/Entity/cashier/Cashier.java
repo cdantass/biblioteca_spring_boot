@@ -1,9 +1,10 @@
 package com.biblioteca.bibliotecaCreate.Entity.cashier;
 
 import com.biblioteca.bibliotecaCreate.Entity.adress.Address;
-import com.biblioteca.bibliotecaCreate.dto.DataRegisterCashier;
-import com.biblioteca.bibliotecaCreate.dto.DataRegisterClient;
+import com.biblioteca.bibliotecaCreate.dto.cashierDTO.DataRegisterCashier;
+import com.biblioteca.bibliotecaCreate.dto.cashierDTO.DataUpdateCashier;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -36,7 +37,22 @@ public class Cashier {
         this.name = data.name();
         this.email = data.email();
         this.mobileNumber = data.mobileNumber();
-        this.address = data.adress();
+        this.address = new Address(data.address());
         this.active = true;
+    }
+
+    public void updateinfo(@Valid DataUpdateCashier dataUpdateCashier) {
+        if (dataUpdateCashier.name() != null){
+            this.name = dataUpdateCashier.name();
+        }
+        if (dataUpdateCashier.email() != null){
+            this.email = dataUpdateCashier.email();
+        }
+        if (dataUpdateCashier.mobileNumber() != null){
+            this.mobileNumber = dataUpdateCashier.mobileNumber();
+        }
+        if (dataUpdateCashier.address() != null){
+            this.address.updateInfo(dataUpdateCashier.address());
+        }
     }
 }

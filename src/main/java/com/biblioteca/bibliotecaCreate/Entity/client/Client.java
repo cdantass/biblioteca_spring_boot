@@ -1,6 +1,6 @@
 package com.biblioteca.bibliotecaCreate.Entity.client;
 
-import com.biblioteca.bibliotecaCreate.dto.DataRegisterClient;
+import com.biblioteca.bibliotecaCreate.dto.clientDTO.DataRegisterClient;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
