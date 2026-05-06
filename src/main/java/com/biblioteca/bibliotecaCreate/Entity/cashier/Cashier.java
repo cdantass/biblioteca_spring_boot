@@ -41,7 +41,7 @@ public class Cashier {
         this.active = true;
     }
 
-    public void updateinfo(@Valid DataUpdateCashier dataUpdateCashier) {
+    public void updateInfo(@Valid DataUpdateCashier dataUpdateCashier) {
         if (dataUpdateCashier.name() != null){
             this.name = dataUpdateCashier.name();
         }
@@ -54,5 +54,8 @@ public class Cashier {
         if (dataUpdateCashier.address() != null){
             this.address.updateInfo(dataUpdateCashier.address());
         }
+    }
+    public void delete(){
+        this.active = false;
     }
 }
