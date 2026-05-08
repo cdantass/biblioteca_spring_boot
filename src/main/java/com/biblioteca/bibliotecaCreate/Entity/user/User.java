@@ -28,18 +28,4 @@ public class User {
     private String email;
     private String password;
     private Role role;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities(){
-        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
-    }
-
-    @Override
-    public String getUsername(){
-        return login;
-    }
-    @Override
-    public @Nullable String getPassword(){
-        return password;
-    }
 }

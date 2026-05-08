@@ -1,7 +1,9 @@
 package com.biblioteca.bibliotecaCreate.Entity.client;
 
 import com.biblioteca.bibliotecaCreate.dto.clientDTO.DataRegisterClient;
+import com.biblioteca.bibliotecaCreate.dto.clientDTO.DataUpdateClient;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,6 +35,20 @@ public class Client {
         this.mobileNumber = data.mobilephone();
         this.active = true;
 
+    }
 
+    public void updateInfo(@Valid DataUpdateClient updateClient){
+        if (updateClient.name() != null){
+            this.name = updateClient.name();
+        }
+        if (updateClient.email() != null){
+            this.email = updateClient.email();
+        }
+        if (updateClient.mobileNumber() != null){
+            this.mobileNumber = updateClient.mobileNumber();
+        }
+    }
+    public void delete(){
+        this.active = false;
     }
 }
