@@ -7,5 +7,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CashierRepository extends JpaRepository<Cashier, Long> {
     Page<Cashier>findAllByActiveTrue(Pageable pageable);
-    boolean existById(Long id);
 }
