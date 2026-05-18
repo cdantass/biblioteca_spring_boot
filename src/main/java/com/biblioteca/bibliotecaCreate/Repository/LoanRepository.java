@@ -7,4 +7,5 @@ import java.time.LocalDateTime;
 
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     boolean existsBookIdAndDate(Long idBook, LocalDateTime date);
+    long countByClientIdAndReturnedFalse(Long idClient);
 }

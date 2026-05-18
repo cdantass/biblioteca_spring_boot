@@ -2,9 +2,17 @@ package com.biblioteca.bibliotecaCreate.Entity.book;
 
 import com.biblioteca.bibliotecaCreate.dto.bookDTO.DataRegisterBook;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "books")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Book {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,6 +35,7 @@ public class Book {
         this.author = dataRegisterBook.author();
         this.isbn = dataRegisterBook.isbn();
         this.totalCopies = dataRegisterBook.totalCopies();
+        this.availableCopies = dataRegisterBook.totalCopies();
         this.active = true;
         this.bookCategory = bookCategory;
     }
