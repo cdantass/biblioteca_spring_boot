@@ -1,7 +1,9 @@
 package com.biblioteca.bibliotecaCreate.Entity.book;
 
 import com.biblioteca.bibliotecaCreate.dto.bookDTO.DataRegisterBook;
+import com.biblioteca.bibliotecaCreate.dto.loanDTO.DataBooksLoan;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,7 +16,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Book {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -28,9 +31,10 @@ public class Book {
     @JoinColumn(name = "category_id")
     private BookCategory bookCategory;
 
-    public Book(){}
+    public Book() {
+    }
 
-    public Book(DataRegisterBook dataRegisterBook, BookCategory bookCategory){
+    public Book(DataRegisterBook dataRegisterBook, BookCategory bookCategory) {
         this.title = dataRegisterBook.title();
         this.author = dataRegisterBook.author();
         this.isbn = dataRegisterBook.isbn();
@@ -38,5 +42,14 @@ public class Book {
         this.availableCopies = dataRegisterBook.totalCopies();
         this.active = true;
         this.bookCategory = bookCategory;
+    }
+
+    public void updateBook(@Valid DataBooksLoan data) {
+        if (data.idBook() != null) {
+            this.id = data.idBook();
+        }
+        if (data.bookCategory() != null) {
+            this.bookCategory = data.bookCategory();
+        }
     }
 }

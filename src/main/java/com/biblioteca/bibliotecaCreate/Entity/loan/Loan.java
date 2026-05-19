@@ -31,4 +31,27 @@ public class Loan {
     private Book book;
 
     private LocalDateTime date;
+
+    private boolean active;
+
+    @ManyToOne
+    private Client client;
+
+    @ManyToOne
+    private Book book;
+
+    public Loan(Long id, Client client, Book book, LocalDateTime date){
+        this.id = id;
+        this.client = client;
+        this.book = book;
+        this.date = date;
+        this.active = true;
+    }
+
+    public void changeBook(Book newBook){
+        if (!this.active){
+            throw new IllegalStateException("Inactive loan cannot be changed");
+        }
+        this.book = newBook;
+    }
 }
