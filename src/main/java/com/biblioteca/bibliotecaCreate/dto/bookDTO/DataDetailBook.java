@@ -23,7 +23,7 @@ public record DataDetailBook(
                 book.getAvailableCopies(),
                 book.getActive(),
                 book.getBookCategory() != null ? book.getBookCategory().getId() : null,
-                book.getBookCategory() != null ? book.getBookCategory().getName() : null
+                book.getBookCategory() != null ? book.getBookCategory().getNameCategory() : null
         );
     }
 }

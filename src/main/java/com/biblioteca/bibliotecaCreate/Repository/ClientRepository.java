@@ -8,5 +8,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ClientRepository extends JpaRepository<Client, Long> {
     Page<Client> findAllByActiveTrue(Pageable pageable);
 
-    boolean existsByIdAndActiveTrue(Long id);
-}
+    boolean existsByIdAndActive(Long id, Boolean active);}

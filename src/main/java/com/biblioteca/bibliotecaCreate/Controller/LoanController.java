@@ -5,7 +5,6 @@ import com.biblioteca.bibliotecaCreate.Repository.LoanRepository;
 import com.biblioteca.bibliotecaCreate.Service.loanService.LoanService;
 import com.biblioteca.bibliotecaCreate.dto.loanDTO.DataBooksLoan;
 import com.biblioteca.bibliotecaCreate.dto.loanDTO.DataUpdateLoanBook;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;

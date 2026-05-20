@@ -31,9 +31,6 @@ public class Book {
     @JoinColumn(name = "category_id")
     private BookCategory bookCategory;
 
-    public Book() {
-    }
-
     public Book(DataRegisterBook dataRegisterBook, BookCategory bookCategory) {
         this.title = dataRegisterBook.title();
         this.author = dataRegisterBook.author();
@@ -42,6 +39,9 @@ public class Book {
         this.availableCopies = dataRegisterBook.totalCopies();
         this.active = true;
         this.bookCategory = bookCategory;
+    }
+
+    public Book(@Valid DataRegisterBook registerBook) {
     }
 
     public void updateBook(@Valid DataBooksLoan data) {

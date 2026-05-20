@@ -33,7 +33,9 @@ public class ClientController {
         var client = new Client(data);
         client = repository.save(client);
 
-        var uri = uriComponentsBuilder.path("/client/{id}").buildAndExpand(client.getId()).toUri();
+        var uri = uriComponentsBuilder
+                .path("/client/{id}")
+                .buildAndExpand(client.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new DataDetailClient(client));
 
@@ -41,14 +43,17 @@ public class ClientController {
 
     @GetMapping
     public ResponseEntity<Page<DataListClient>> list(Pageable pageable){
-        var page = repository.findAllByActiveTrue(pageable).map(DataListClient::new);
+        var page = repository
+                .findAllByActiveTrue(pageable)
+                .map(DataListClient::new);
 
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DataDetailClient> detail(@PathVariable Long id){
-        var client = repository.findById(id).orElseThrow(()-> new NotFoundException("Client not found"));
+        var client = repository.findById(id)
+                .orElseThrow(()-> new NotFoundException("Client not found"));
 
         return ResponseEntity.ok(new DataDetailClient(client));
     }
@@ -56,7 +61,8 @@ public class ClientController {
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<DataDetailClient> update(@PathVariable Long id, @RequestBody @Valid DataUpdateClient data){
-        var client = repository.findById(id).orElseThrow(()-> new NotFoundException("Client not found"));
+        var client = repository.findById(id)
+                .orElseThrow(()-> new NotFoundException("Client not found"));
         client.updateInfo(data);
 
         return ResponseEntity.ok(new DataDetailClient(client));
@@ -64,7 +70,8 @@ public class ClientController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Void> delete(@PathVariable Long id){
-        var client = repository.findById(id).orElseThrow(()-> new NotFoundException("Client not found"));
+        var client = repository.findById(id)
+                .orElseThrow(()-> new NotFoundException("Client not found"));
 
         client.delete();
 

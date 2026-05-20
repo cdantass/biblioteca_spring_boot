@@ -32,13 +32,9 @@ public class Loan {
 
     private LocalDateTime date;
 
+    private boolean returned;
+
     private boolean active;
-
-    @ManyToOne
-    private Client client;
-
-    @ManyToOne
-    private Book book;
 
     public Loan(Long id, Client client, Book book, LocalDateTime date){
         this.id = id;
@@ -46,6 +42,7 @@ public class Loan {
         this.book = book;
         this.date = date;
         this.active = true;
+        this.returned = false;
     }
 
     public void changeBook(Book newBook){

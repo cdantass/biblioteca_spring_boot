@@ -18,7 +18,7 @@ public class ValidationBookAlreadyBorrowed implements ValidationLoan {
             return;
         }
 
-        boolean BookAlreadyBorrowed = repository.existsBookIdAndDate(data.idBook(), data.date());
+        boolean BookAlreadyBorrowed = repository.existsByBookIdAndDate(data.idBook(), data.date());
 
         if (BookAlreadyBorrowed){
             throw new ValidException("Book Already Borrowed in the moment");

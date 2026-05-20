@@ -19,7 +19,7 @@ public class ValidationClientActive implements ValidationLoan{
             return;
         }
 
-        boolean clientActive = repository.existsByIdAndActiveTrue(data.idClient());
+        boolean clientActive = repository.existsByIdAndActive(data.idClient(), true);
 
         if (!clientActive){
             throw new ValidException("Client not active or not exist");
