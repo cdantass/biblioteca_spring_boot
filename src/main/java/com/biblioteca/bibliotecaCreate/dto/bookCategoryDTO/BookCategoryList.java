@@ -1,10 +1,10 @@
 package com.biblioteca.bibliotecaCreate.dto.bookCategoryDTO;
 
 import com.biblioteca.bibliotecaCreate.Entity.book.BookCategory;
-import jakarta.validation.constraints.NotNull;
 
-public record BookCategoryUpdate(@NotNull Long id, String NameCategory) {
-    public BookCategoryUpdate(BookCategory bookCategory) {
+public record BookCategoryList(Long id, String nameCategory) {
+
+    public BookCategoryList(BookCategory bookCategory){
         this(bookCategory.getId(), bookCategory.getNameCategory());
     }
 }

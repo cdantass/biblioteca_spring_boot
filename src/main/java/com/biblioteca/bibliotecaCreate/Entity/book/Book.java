@@ -1,9 +1,7 @@
 package com.biblioteca.bibliotecaCreate.Entity.book;
 
 import com.biblioteca.bibliotecaCreate.dto.bookDTO.DataRegisterBook;
-import com.biblioteca.bibliotecaCreate.dto.loanDTO.DataBooksLoan;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,19 +14,31 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Book {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String author;
+
+    @Column(nullable = false, unique = true)
     private String isbn;
+
+    @Column(nullable = false)
     private Integer totalCopies;
+
+    @Column(nullable = false)
     private Integer availableCopies;
+
+    @Column(nullable = false)
     private Boolean active;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private BookCategory bookCategory;
 
     public Book(DataRegisterBook dataRegisterBook, BookCategory bookCategory) {
@@ -41,15 +51,7 @@ public class Book {
         this.bookCategory = bookCategory;
     }
 
-    public Book(@Valid DataRegisterBook registerBook) {
-    }
-
-    public void updateBook(@Valid DataBooksLoan data) {
-        if (data.idBook() != null) {
-            this.id = data.idBook();
-        }
-        if (data.bookCategory() != null) {
-            this.bookCategory = data.bookCategory();
-        }
+    public void delete() {
+        this.active = false;
     }
 }
