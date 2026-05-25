@@ -1,18 +1,14 @@
 package com.biblioteca.bibliotecaCreate.Controller;
 
-import com.biblioteca.bibliotecaCreate.Entity.book.BookCategory;
-import com.biblioteca.bibliotecaCreate.Repository.BookCategoryRepository;
+import com.biblioteca.bibliotecaCreate.Service.bookCategoryService.BookCategoryService;
 import com.biblioteca.bibliotecaCreate.dto.bookCategoryDTO.BookCategoryDetail;
 import com.biblioteca.bibliotecaCreate.dto.bookCategoryDTO.BookCategoryList;
 import com.biblioteca.bibliotecaCreate.dto.bookCategoryDTO.BookCategoryRegister;
 import com.biblioteca.bibliotecaCreate.dto.bookCategoryDTO.BookCategoryUpdate;
-import com.biblioteca.bibliotecaCreate.infra.exception.NotFoundException;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -23,53 +19,41 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class BookCategoryController {
 
     @Autowired
-    private BookCategoryRepository repository;
+    private BookCategoryService bookCategoryService;
 
     @PostMapping
     @Transactional
 
     public ResponseEntity<BookCategoryDetail> register(@RequestBody @Valid BookCategoryRegister bookCategoryRegister, UriComponentsBuilder uriComponentsBuilder){
-        var bookCategory = repository.save(new BookCategory(bookCategoryRegister));
+        var bookCategoryDetail = bookCategoryService.register(bookCategoryRegister);
 
         var uri = uriComponentsBuilder.path("/bookCategory/{id}")
-                .buildAndExpand(bookCategory.getId()).toUri();
+                .buildAndExpand(bookCategoryDetail.id()).toUri();
 
         return ResponseEntity.created(uri)
-                .body(new BookCategoryDetail(bookCategory));
+                .body(bookCategoryDetail);
     }
 
     @GetMapping
     public ResponseEntity<Page<BookCategoryList>> list(Pageable pageable){
-        var page = repository.findAllByActiveTrue(pageable).map(BookCategoryList::new);
-        return ResponseEntity.ok(page);
+        return ResponseEntity.ok(bookCategoryService.list(pageable));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BookCategoryDetail> detail(@PathVariable Long id){
-        var bookCategory = repository.findById(id)
-                .orElseThrow(()-> new NotFoundException("Book category not found"));
-
-        return ResponseEntity.ok(new BookCategoryDetail(bookCategory));
+        return ResponseEntity.ok(bookCategoryService.detail(id));
     }
 
-
-    @PutMapping
+    @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<BookCategoryUpdate> update(@RequestBody @Valid BookCategoryUpdate update){
-        var bookCategory = repository.findById(update.id())
-                .orElseThrow(()->new EntityNotFoundException("Book Category not found"));
-        bookCategory.updateBookCategory(update);
-
-        return ResponseEntity.ok(new BookCategoryUpdate(bookCategory));
+    public ResponseEntity<BookCategoryUpdate> update(@PathVariable Long id, @RequestBody @Valid BookCategoryUpdate bookCategoryUpdate){
+        return ResponseEntity.ok(bookCategoryService.update(id, bookCategoryUpdate));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity delete(@PathVariable Long id){
-        var bookCategory = repository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("Book category not found"));
-        bookCategory.delete();
-
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        bookCategoryService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

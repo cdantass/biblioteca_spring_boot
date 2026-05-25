@@ -1,5 +1,6 @@
 package com.biblioteca.bibliotecaCreate.Entity.book;
 
+import com.biblioteca.bibliotecaCreate.dto.bookCategoryDTO.BookCategoryDetail;
 import com.biblioteca.bibliotecaCreate.dto.bookCategoryDTO.BookCategoryRegister;
 import com.biblioteca.bibliotecaCreate.dto.bookCategoryDTO.BookCategoryUpdate;
 import jakarta.persistence.*;

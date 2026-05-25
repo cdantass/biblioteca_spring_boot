@@ -1,15 +1,13 @@
 package com.biblioteca.bibliotecaCreate.Controller;
 
-import com.biblioteca.bibliotecaCreate.Entity.client.Client;
-import com.biblioteca.bibliotecaCreate.Repository.ClientRepository;
-import com.biblioteca.bibliotecaCreate.dto.cashierDTO.DataUpdateCashier;
+import com.biblioteca.bibliotecaCreate.Service.clientService.ClientService;
 import com.biblioteca.bibliotecaCreate.dto.clientDTO.DataDetailClient;
 import com.biblioteca.bibliotecaCreate.dto.clientDTO.DataListClient;
 import com.biblioteca.bibliotecaCreate.dto.clientDTO.DataRegisterClient;
 import com.biblioteca.bibliotecaCreate.dto.clientDTO.DataUpdateClient;
-import com.biblioteca.bibliotecaCreate.infra.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -20,61 +18,40 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/clients")
 public class ClientController {
 
-    private final ClientRepository repository;
-
-    public ClientController(ClientRepository repository){
-        this.repository = repository;
-    }
+    @Autowired
+    private ClientService clientService;
 
     @PostMapping
     @Transactional
     public ResponseEntity<DataDetailClient> register(@RequestBody @Valid DataRegisterClient data, UriComponentsBuilder uriComponentsBuilder){
-
-        var client = new Client(data);
-        client = repository.save(client);
+        var client = clientService.register(data);
 
         var uri = uriComponentsBuilder
                 .path("/client/{id}")
-                .buildAndExpand(client.getId()).toUri();
+                .buildAndExpand(client.id()).toUri();
 
-        return ResponseEntity.created(uri).body(new DataDetailClient(client));
-
+        return ResponseEntity.created(uri).body(client);
     }
 
     @GetMapping
     public ResponseEntity<Page<DataListClient>> list(Pageable pageable){
-        var page = repository
-                .findAllByActiveTrue(pageable)
-                .map(DataListClient::new);
-
-        return ResponseEntity.ok(page);
+        return ResponseEntity.ok(clientService.list(pageable));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DataDetailClient> detail(@PathVariable Long id){
-        var client = repository.findById(id)
-                .orElseThrow(()-> new NotFoundException("Client not found"));
-
-        return ResponseEntity.ok(new DataDetailClient(client));
+        return ResponseEntity.ok(clientService.detail(id));
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<DataDetailClient> update(@PathVariable Long id, @RequestBody @Valid DataUpdateClient data){
-        var client = repository.findById(id)
-                .orElseThrow(()-> new NotFoundException("Client not found"));
-        client.updateInfo(data);
-
-        return ResponseEntity.ok(new DataDetailClient(client));
+    public ResponseEntity<DataUpdateClient> update(@PathVariable Long id, @RequestBody @Valid DataUpdateClient data){
+        return ResponseEntity.ok(clientService.update(id, data));
     }
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Void> delete(@PathVariable Long id){
-        var client = repository.findById(id)
-                .orElseThrow(()-> new NotFoundException("Client not found"));
-
-        client.delete();
-
+        clientService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
