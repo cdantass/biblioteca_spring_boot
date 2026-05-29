@@ -7,8 +7,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record DataBooksLoan(Long idBook, @NotNull Long idClient, @NotNull @Future LocalDateTime date, BookCategory bookCategory) {
+public record DataBooksLoan(Long idBook, @NotNull Long idClient, @NotNull Long idCashier, @NotNull @Future LocalDateTime date, BookCategory bookCategory) {
     public DataBooksLoan(Loan saveLoan) {
-        this(saveLoan.getBook().getId(), saveLoan.getClient().getId(),saveLoan.getDate(), saveLoan.getBook().getBookCategory());
+        this(saveLoan.getBook().getId(), saveLoan.getClient().getId(), saveLoan.getCashier().getId(), saveLoan.getDate(), saveLoan.getBook().getBookCategory());
     }
 }

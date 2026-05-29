@@ -27,6 +27,8 @@ public class Client {
 
     private String mobileNumber;
 
+    private String biography;
+
     private boolean active;
 
     public Client(DataRegisterClient data){
@@ -46,6 +48,9 @@ public class Client {
         }
         if (updateClient.mobileNumber() != null){
             this.mobileNumber = updateClient.mobileNumber();
+        }
+        if (updateClient.biography() != null){
+            this.biography = updateClient.biography();
         }
     }
     public void delete(){

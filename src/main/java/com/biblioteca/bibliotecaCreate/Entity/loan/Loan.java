@@ -1,6 +1,7 @@
 package com.biblioteca.bibliotecaCreate.Entity.loan;
 
 import com.biblioteca.bibliotecaCreate.Entity.book.Book;
+import com.biblioteca.bibliotecaCreate.Entity.cashier.Cashier;
 import com.biblioteca.bibliotecaCreate.Entity.client.Client;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,16 +31,21 @@ public class Loan {
     @JoinColumn(name = "book_id")
     private Book book;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cashier_id")
+    private Cashier cashier;
+
     private LocalDateTime date;
 
     private boolean returned;
 
     private boolean active;
 
-    public Loan(Long id, Client client, Book book, LocalDateTime date){
+    public Loan(Long id, Client client, Book book, Cashier cashier, LocalDateTime date){
         this.id = id;
         this.client = client;
         this.book = book;
+        this.cashier = cashier;
         this.date = date;
         this.active = true;
         this.returned = false;
@@ -50,5 +56,9 @@ public class Loan {
             throw new IllegalStateException("Inactive loan cannot be changed");
         }
         this.book = newBook;
+    }
+
+    public void cancel(){
+        this.active = false;
     }
 }

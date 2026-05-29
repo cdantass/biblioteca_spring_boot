@@ -1,7 +1,5 @@
 package com.biblioteca.bibliotecaCreate.Controller;
 
-import com.biblioteca.bibliotecaCreate.Repository.BookRepository;
-import com.biblioteca.bibliotecaCreate.Repository.LoanRepository;
 import com.biblioteca.bibliotecaCreate.Service.loanService.LoanService;
 import com.biblioteca.bibliotecaCreate.dto.loanDTO.DataBooksLoan;
 import com.biblioteca.bibliotecaCreate.dto.loanDTO.DataUpdateLoanBook;
@@ -16,34 +14,45 @@ import java.util.List;
 @RequestMapping("/loans")
 public class LoanController {
 
-    private final LoanRepository loanRepository;
-
-    private final BookRepository bookRepository;
-
     private final LoanService loanService;
 
-    public LoanController(LoanRepository loanRepository, LoanService loanService, BookRepository bookRepository){
-        this.loanRepository = loanRepository;
+    public LoanController(LoanService loanService){
         this.loanService = loanService;
-        this.bookRepository = bookRepository;
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity <DataBooksLoan> agendarloan(@RequestBody @Valid DataBooksLoan data){
+    public ResponseEntity<DataBooksLoan> createLoan(@RequestBody @Valid DataBooksLoan data){
         var detail = loanService.loan(data);
         return ResponseEntity.status(201).body(detail);
     }
 
     @GetMapping
-    public List <DataBooksLoan> getAllLoans(){
-        return loanService.getAllLoans();
+    public ResponseEntity<List<DataBooksLoan>> getAllLoans(){
+        var loans = loanService.getAllLoans();
+        return ResponseEntity.ok(loans);
     }
 
-    @PatchMapping
+    @GetMapping("/{id}")
+    public ResponseEntity<DataBooksLoan> getLoanById(@PathVariable Long id){
+        var loan = loanService.getLoanById(id);
+        return ResponseEntity.ok(loan);
+    }
+
+    @PatchMapping("/{id}")
     @Transactional
-    public ResponseEntity updateNewBook(@PathVariable Long id, @RequestBody @Valid DataUpdateLoanBook data){
+    public ResponseEntity<DataBooksLoan> updateNewBook(
+            @PathVariable Long id,
+            @RequestBody @Valid DataUpdateLoanBook data
+    ){
         var updateLoan = loanService.updateBook(id, data);
         return ResponseEntity.ok(updateLoan);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Void> cancelLoan(@PathVariable Long id){
+        loanService.cancel(id);
+        return ResponseEntity.noContent().build();
     }
 }
